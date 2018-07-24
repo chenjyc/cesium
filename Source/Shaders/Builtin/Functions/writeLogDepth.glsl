@@ -1,5 +1,5 @@
 #ifdef LOG_DEPTH
-varying float v_logZ;
+varying vec4 v_logPositionECAndLogZ;
 #endif
 
 /**
@@ -39,6 +39,6 @@ void czm_writeLogDepth(float logZ)
  */
 void czm_writeLogDepth() {
 #ifdef LOG_DEPTH
-    czm_writeLogDepth(v_logZ);
+    czm_writeLogDepth(v_logPositionECAndLogZ.w);
 #endif
 }

@@ -1,14 +1,13 @@
 #ifdef LOG_DEPTH
-varying float v_logZ;
-varying vec3 v_logPositionEC;
+varying vec4 v_logPositionECAndLogZ;
 #endif
 
 void czm_updatePositionDepth() {
 #if defined(LOG_DEPTH) && !defined(DISABLE_GL_POSITION_LOG_DEPTH)
-    v_logPositionEC = (czm_inverseProjection * gl_Position).xyz;
+    v_logPositionECAndLogZ.xyz = (czm_inverseProjection * gl_Position).xyz;
 
 #ifdef ENABLE_GL_POSITION_LOG_DEPTH_AT_HEIGHT
-    if (length(v_logPositionEC) < 2.0e6)
+    if (length(v_logPositionECAndLogZ.xyz) < 2.0e6)
     {
         return;
     }
@@ -28,7 +27,7 @@ void czm_updatePositionDepth() {
 void czm_vertexLogDepth()
 {
 #ifdef LOG_DEPTH
-    v_logZ = 1.0 + gl_Position.w;
+    v_logPositionECAndLogZ.w = 1.0 + gl_Position.w;
     czm_updatePositionDepth();
 #endif
 }
@@ -50,7 +49,7 @@ void czm_vertexLogDepth()
 void czm_vertexLogDepth(vec4 clipCoords)
 {
 #ifdef LOG_DEPTH
-    v_logZ = 1.0 + clipCoords.w;
+    v_logPositionECAndLogZ.w = 1.0 + clipCoords.w;
     czm_updatePositionDepth();
 #endif
 }
